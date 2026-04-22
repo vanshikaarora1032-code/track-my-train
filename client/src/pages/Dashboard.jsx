@@ -16,11 +16,7 @@ const Dashboard = () => {
   const [fromStation, setFromStation] = useState('');
   const [toStation, setToStation] = useState('');
   const [trainQuery, setTrainQuery] = useState('');
-  const [history] = useState([
-    { id: 1, train: '12992 Udaipur City Intercity', route: 'JP - BJNR' },
-    { id: 2, train: '19666 Khajuraho Express', route: 'BJNR - JP' },
-    { id: 3, train: '12991 Jaipur Intercity', route: 'BJNR - JP' },
-  ]);
+  const [history] = useState([]);
 
   // PNR Data State
   const [pnr, setPnr] = useState('');
@@ -186,13 +182,24 @@ const Dashboard = () => {
             <button 
               onClick={() => {
                 // The API needs station codes (e.g. 'JP'), but users might type 'Jaipur (JP)'
-                // Simple extraction: assume code is the word if short, or look for uppercase words
                 const getCode = (str) => {
                   if (!str) return '';
-                  const parts = str.split(' ');
-                  // Try to find a part that is all uppercase
-                  const code = parts.find(p => p === p.toUpperCase() && p.length > 1 && !/\d/.test(p));
-                  return code || str.trim(); 
+                  const s = str.trim().toUpperCase();
+                  
+                  // Local mapping for common user requests
+                  const localMap = {
+                    'BIJAINAGAR': 'BJNR',
+                    'AJMER': 'AII',
+                    'JAIPUR': 'JP',
+                    'MUMBAI': 'BCT',
+                    'DELHI': 'NDLS'
+                  };
+                  if (localMap[s]) return localMap[s];
+
+                  const parts = s.split(' ');
+                  // Try to find a part that is all uppercase and 2-4 chars
+                  const code = parts.find(p => p.length >= 2 && p.length <= 4 && !/\d/.test(p));
+                  return code || s; 
                 }
                 
                 const fromCode = getCode(fromStation);

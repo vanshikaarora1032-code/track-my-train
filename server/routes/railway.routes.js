@@ -14,8 +14,13 @@ dotenv.config();
 
 const router = express.Router();
 
-// Configure SDK
-configure(process.env.IRCTC_API_KEY);
+// Configure SDK with safety check
+if (process.env.IRCTC_API_KEY) {
+  console.log('Configuring IRCTC SDK...');
+  configure(process.env.IRCTC_API_KEY);
+} else {
+  console.warn('IRCTC_API_KEY not found in environment variables. Real API calls will fail.');
+}
 
 // Helper for RapidAPI
 const fetchFromRapidAPI = (path) => {
@@ -167,42 +172,35 @@ function getDynamicFallbackTrains(src, dst) {
     'CNB': 'Kanpur Central',
     'HWH': 'Howrah',
     'MAS': 'Chennai Central',
-    'SBC': 'Bangalore City'
+    'SBC': 'Bangalore City',
+    'BJNR': 'Bijainagar',
+    'AII': 'Ajmer',
+    'JU': 'Jodhpur'
   };
 
-  const srcName = majorCities[src] || src;
-  const dstName = majorCities[dst] || dst;
+  const srcName = majorCities[src?.toUpperCase()] || src || 'Source';
+  const dstName = majorCities[dst?.toUpperCase()] || dst || 'Destination';
 
   return [
     {
       trainNo: Math.floor(10000 + Math.random() * 20000).toString(),
-      trainName: `${srcName}-${dstName} Express`,
+      trainName: `${srcName}-${dstName} SF Express`,
       fromStationCode: src,
       toStationCode: dst,
       fromStationTime: '06:15',
-      toStationTime: '18:45',
-      travelTime: '12h 30m',
+      toStationTime: '13:45',
+      travelTime: '7h 30m',
       classes: ['SL', '3A', '2A', '1A']
     },
     {
       trainNo: Math.floor(10000 + Math.random() * 20000).toString(),
-      trainName: `${dstName} Superfast`,
+      trainName: `${dstName} Intercity`,
       fromStationCode: src,
       toStationCode: dst,
       fromStationTime: '14:30',
-      toStationTime: '04:15',
-      travelTime: '13h 45m',
-      classes: ['2S', 'CC', '3A']
-    },
-    {
-      trainNo: Math.floor(10000 + Math.random() * 20000).toString(),
-      trainName: `Vande Bharat ${dstName}`,
-      fromStationCode: src,
-      toStationCode: dst,
-      fromStationTime: '09:00',
-      toStationTime: '15:20',
-      travelTime: '6h 20m',
-      classes: ['CC', 'EC']
+      toStationTime: '19:15',
+      travelTime: '4h 45m',
+      classes: ['2S', 'CC']
     }
   ];
 }

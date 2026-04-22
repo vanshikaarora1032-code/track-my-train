@@ -4,84 +4,6 @@ import { Search, ArrowLeft, Clock, Share2, MoreVertical, Train as TrainIcon, Map
 import { Link, useLocation } from 'react-router-dom';
 import { railwayApi } from '../services/railwayApi';
 
-// Demo JSON exactly mimicking your provided data
-const demoData = {
-    "status": true,
-    "data": {
-        "trainNo": "12992",
-        "trainName": "Udaipur Intercity Exp",
-        "date": "20-Apr-2026",
-        "statusNote": "Departed from RAJOSI(ROS) at 16:41 20-Apr",
-        "lastUpdate": "20-Apr-2026 16:48",
-        "totalStations": 17,
-        "stations": [
-            {
-                "stationCode": "JP",
-                "stationName": "Jaipur Junction",
-                "platform": "1A",
-                "distanceKm": "0",
-                "arrival": { "scheduled": "SRC", "actual": "SRC", "delay": "" },
-                "departure": { "scheduled": "14:10 20-Apr", "actual": "14:15 20-Apr", "delay": "5 Min" }
-            },
-            {
-                "stationCode": "JOB",
-                "stationName": "Asalpur Jobner",
-                "platform": "3",
-                "distanceKm": "36",
-                "arrival": { "scheduled": "14:37 20-Apr", "actual": "14:55 20-Apr", "delay": "18 Min" },
-                "departure": { "scheduled": "14:39 20-Apr", "actual": "14:56 20-Apr", "delay": "17 Min" }
-            },
-            {
-                "stationCode": "FL",
-                "stationName": "Phulera Junction",
-                "platform": "4",
-                "distanceKm": "54",
-                "arrival": { "scheduled": "14:56 20-Apr", "actual": "15:06 20-Apr", "delay": "10 Min" },
-                "departure": { "scheduled": "14:58 20-Apr", "actual": "15:15 20-Apr", "delay": "17 Min" }
-            },
-            {
-                "stationCode": "KSG",
-                "stationName": "Kishangarh",
-                "platform": "2",
-                "distanceKm": "109",
-                "arrival": { "scheduled": "15:33 20-Apr", "actual": "15:44 20-Apr", "delay": "11 Min" },
-                "departure": { "scheduled": "15:35 20-Apr", "actual": "15:46 20-Apr", "delay": "11 Min" }
-            },
-            {
-                "stationCode": "AII",
-                "stationName": "Ajmer Junction",
-                "platform": "6",
-                "distanceKm": "134",
-                "arrival": { "scheduled": "16:05 20-Apr", "actual": "16:16 20-Apr", "delay": "11 Min" },
-                "departure": { "scheduled": "16:10 20-Apr", "actual": "16:23 20-Apr", "delay": "13 Min" }
-            },
-            {
-                "stationCode": "NSD",
-                "stationName": "Nasirabad",
-                "platform": "1",
-                "distanceKm": "158",
-                "arrival": { "scheduled": "16:35 20-Apr", "actual": "--", "delay": "" },
-                "departure": { "scheduled": "16:37 20-Apr", "actual": "--", "delay": "" }
-            },
-            {
-                "stationCode": "BJNR",
-                "stationName": "Bijainagar",
-                "platform": "1",
-                "distanceKm": "199",
-                "arrival": { "scheduled": "17:04 20-Apr", "actual": "--", "delay": "" },
-                "departure": { "scheduled": "17:06 20-Apr", "actual": "--", "delay": "" }
-            },
-            {
-                "stationCode": "UDZ",
-                "stationName": "Udaipur City",
-                "platform": "4",
-                "distanceKm": "434",
-                "arrival": { "scheduled": "21:48 20-Apr", "actual": "--", "delay": "" },
-                "departure": { "scheduled": "DSTN", "actual": "DSTN", "delay": "" }
-            }
-        ]
-    }
-};
 
 const formatTime = (timeStr) => {
   if (!timeStr || timeStr === '--' || timeStr === 'SRC' || timeStr === 'DSTN') {
@@ -118,18 +40,17 @@ const LiveStatus = () => {
   const performSearch = async (number) => {
     setLoading(true);
     setError('');
+    setData(null);
     try {
       const response = await railwayApi.getTrainStatus(number);
       if (response && response.status && response.data && response.data.stations?.length > 0) {
          setData(response.data);
       } else {
-         console.warn("API couldn't find live status, falling back to demo layout");
-         setData(demoData.data);
+         setError(response.message || 'Live status not available for this train.');
       }
     } catch (err) {
        console.error('Fetch Error:', err);
-       console.warn("Network error during live status fetch, falling back to demo layout");
-       setData(demoData.data);
+       setError('Failed to fetch live status. Please check your connection.');
     } finally {
       setLoading(false);
     }
@@ -174,10 +95,6 @@ const LiveStatus = () => {
               {error}
             </div>
           )}
-
-          <button onClick={() => setData(demoData.data)} className="text-accent underline text-sm text-center opacity-80 hover:opacity-100">
-             Load the 'Where is my train' exact layout demo
-          </button>
         </div>
      );
   }
