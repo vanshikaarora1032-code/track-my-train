@@ -6,11 +6,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Main Search Route
-app.post('/api/railway/between-stations', async (req, res) => {
+// Routes
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', time: new Date().toISOString() });
+});
+
+app.post('/api/railway/between-stations', (req, res) => {
   const { src, dst } = req.body;
-  // Always return fallback for now to ensure NO 500 crashes
-  console.log('Search:', src, dst);
   res.json({ 
     status: true, 
     data: getDynamicFallbackTrains(src, dst),
@@ -18,29 +20,25 @@ app.post('/api/railway/between-stations', async (req, res) => {
   });
 });
 
-// Health check
-app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/api/railway/pnr-status', (req, res) => {
+  res.json({ status: false, message: 'PNR route is active but needs POST' });
+});
 
 function getDynamicFallbackTrains(src, dst) {
   const majorCities = { 'NDLS': 'New Delhi', 'BJNR': 'Bijainagar', 'AII': 'Ajmer', 'JU': 'Jodhpur', 'JP': 'Jaipur' };
-  const s = src?.toUpperCase();
-  const d = dst?.toUpperCase();
-  const srcName = majorCities[s] || src || 'Source';
-  const dstName = majorCities[d] || dst || 'Destination';
+  const s = src?.toUpperCase() || 'SRC';
+  const d = dst?.toUpperCase() || 'DST';
+  const srcName = majorCities[s] || s;
+  const dstName = majorCities[d] || d;
   return [
     {
       trainNo: '12992', trainName: `${srcName}-${dstName} Express`,
       fromStationCode: s, toStationCode: d,
       fromStationTime: '06:15', toStationTime: '13:45',
       travelTime: '7h 30m', classes: ['SL', '3A', '2A']
-    },
-    {
-      trainNo: '19666', trainName: `${dstName} Intercity`,
-      fromStationCode: s, toStationCode: d,
-      fromStationTime: '14:30', toStationTime: '19:15',
-      travelTime: '4h 45m', classes: ['2S', 'CC']
     }
   ];
 }
 
+// Export for Vercel
 export default app;
