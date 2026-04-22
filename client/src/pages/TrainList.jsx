@@ -32,7 +32,8 @@ const TrainList = () => {
           setError(response.message || 'No trains found for this route');
         }
       } catch (err) {
-        setError('Failed to fetch trains. Please try again.');
+        console.error('Fetch error:', err);
+        setError(err.message || 'Failed to fetch trains. Please try again.');
       } finally {
         setLoading(false);
       }
