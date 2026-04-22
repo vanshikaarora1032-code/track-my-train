@@ -158,7 +158,11 @@ router.post('/between-stations', async (req, res) => {
     }
   } catch (error) {
     console.error('Search Trains Error:', error);
-    res.status(500).json({ status: false, message: 'Failed to search trains' });
+    res.status(500).json({ 
+      status: false, 
+      message: 'Failed to search trains: ' + error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
