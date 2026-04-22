@@ -1,6 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import https from 'https';
+const express = require('express');
+const cors = require('cors');
+const https = require('https');
 
 const app = express();
 app.use(cors());
@@ -8,7 +8,7 @@ app.use(express.json());
 
 // Routes
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', time: new Date().toISOString() });
+  res.json({ status: 'ok', runtime: 'CommonJS', time: new Date().toISOString() });
 });
 
 app.post('/api/railway/between-stations', (req, res) => {
@@ -18,10 +18,6 @@ app.post('/api/railway/between-stations', (req, res) => {
     data: getDynamicFallbackTrains(src, dst),
     isFallback: true
   });
-});
-
-app.get('/api/railway/pnr-status', (req, res) => {
-  res.json({ status: false, message: 'PNR route is active but needs POST' });
 });
 
 function getDynamicFallbackTrains(src, dst) {
@@ -40,5 +36,4 @@ function getDynamicFallbackTrains(src, dst) {
   ];
 }
 
-// Export for Vercel
-export default app;
+module.exports = app;
