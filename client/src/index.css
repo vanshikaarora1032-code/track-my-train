@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0a1208;
+  --bg-card: #111a0f;
+  --bg-input: #182216;
+  --accent: #c8f135;
+  --text-primary: #ffffff;
+  --text-muted: #6b7280;
+  --border-custom: #243324;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  position: relative;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Radial dot pattern texture overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle, #243324 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 10;
+}
+
+@layer components {
+  .auth-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-custom);
+    padding: 24px 32px;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+  }
+
+  @media (max-height: 700px) {
+    .auth-card {
+      padding: 16px 24px;
+    }
+    .auth-card h1 {
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+    .auth-card p {
+      margin-bottom: 12px;
+    }
+    .mb-8 {
+      margin-bottom: 16px;
+    }
+    .my-8 {
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+    .mt-8 {
+      margin-top: 16px;
+    }
+    .mb-6 {
+      margin-bottom: 12px;
+    }
+  }
+
+  .input-field {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-custom);
+    color: white;
+    padding: 14px 16px;
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .input-field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(200, 241, 53, 0.2);
+  }
+
+  .primary-button {
+    background-color: var(--accent);
+    color: var(--bg-primary);
+    font-weight: 700;
+    width: 100%;
+    padding: 14px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .primary-button:hover {
+    filter: brightness(1.1);
+    transform: scale(1.02);
+  }
+
+  .social-button {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-custom);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    flex: 1;
+  }
+
+  .social-button:hover {
+    background-color: #243324;
+  }
+}
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
