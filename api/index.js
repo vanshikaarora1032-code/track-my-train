@@ -9,7 +9,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Dynamic Import for IRCTC SDK to prevent startup crash on Vercel
+// Temporarily disabled for isolation
+/*
 let sdk = null;
 const loadSdk = async () => {
   if (sdk) return sdk;
@@ -26,6 +27,8 @@ const loadSdk = async () => {
     return null;
   }
 };
+*/
+const loadSdk = async () => null; // Hardcoded null for test
 
 // Health Check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
