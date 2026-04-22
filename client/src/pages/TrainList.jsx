@@ -107,13 +107,15 @@ const TrainList = () => {
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-sm font-bold text-white truncate group-hover:text-accent transition-colors">
+                    <h3 className="text-sm font-bold text-white truncate group-hover:text-accent transition-colors leading-tight">
                       {train.trainNo} • {train.trainName}
                     </h3>
-                    <p className="text-[10px] text-text-muted mt-1 font-medium tracking-wide">Runs: MTWTFSS</p>
+                    <p className="text-[10px] text-text-muted mt-1.5 font-bold tracking-widest uppercase">Runs: MTWTFSS</p>
                   </div>
-                  <div className="text-right ml-4">
-                    <span className="text-xs font-bold text-white">{train.travelTime || '12h 30m'}</span>
+                  <div className="text-right ml-4 shrink-0">
+                    <span className="text-[10px] font-bold text-accent bg-accent/10 px-2 py-1 rounded-md border border-accent/20">
+                      {train.travelTime || '12h 30m'}
+                    </span>
                   </div>
                 </div>
 
@@ -132,11 +134,11 @@ const TrainList = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-4 overflow-x-auto hide-scrollbar pb-1">
+                <div className="flex gap-2.5 mt-4 overflow-x-auto hide-scrollbar pb-1 snap-x">
                   {['SL', '3A', '2A', '1A'].map(cls => (
-                    <div key={cls} className="bg-bg-input border border-border-custom px-3 py-1.5 rounded-lg shrink-0">
-                      <p className="text-[10px] font-bold text-white mb-0.5">{cls}</p>
-                      <p className="text-[9px] text-green-400 font-bold">AVAILABLE</p>
+                    <div key={cls} className="bg-bg-input border border-border-custom px-4 py-2 rounded-xl shrink-0 snap-start min-w-[80px]">
+                      <p className="text-[10px] font-black text-white mb-0.5 uppercase">{cls}</p>
+                      <p className="text-[9px] text-green-400 font-bold tracking-tighter">AVAILABLE</p>
                     </div>
                   ))}
                 </div>

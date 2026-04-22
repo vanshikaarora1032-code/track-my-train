@@ -16,7 +16,6 @@ const Dashboard = () => {
   const [fromStation, setFromStation] = useState('');
   const [toStation, setToStation] = useState('');
   const [trainQuery, setTrainQuery] = useState('');
-  const [stationQuery, setStationQuery] = useState('');
   const [history] = useState([
     { id: 1, train: '12992 Udaipur City Intercity', route: 'JP - BJNR' },
     { id: 2, train: '19666 Khajuraho Express', route: 'BJNR - JP' },
@@ -199,9 +198,10 @@ const Dashboard = () => {
                 const fromCode = getCode(fromStation);
                 const toCode = getCode(toStation);
                 
+                if (!fromCode || !toCode) return;
                 navigate('/train-list', { state: { from: fromCode, to: toCode } })
               }}
-              className="w-full bg-[#2e7d32] py-3.5 rounded-lg flex items-center justify-center font-bold text-lg hover:bg-[#2e7d32]/90 active:scale-[0.99] transition-all shadow-lg text-white"
+              className="w-full bg-accent text-bg-primary py-4 rounded-xl flex items-center justify-center font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_20px_rgba(200,241,53,0.2)]"
             >
               Find trains
             </button>
@@ -215,56 +215,31 @@ const Dashboard = () => {
           transition={{ delay: 0.1 }}
           className="bg-bg-card border border-border-custom rounded-xl p-4 flex items-center gap-4"
         >
-          <div className="p-2 bg-white/5 rounded-lg border border-border-custom">
-            <Train size={32} className="text-accent" />
+          <div className="p-3 bg-white/5 rounded-xl border border-border-custom">
+            <Train size={28} className="text-accent" />
           </div>
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex-1">
-                <p className="text-xs text-text-muted mb-0.5">Train No. / Train Name</p>
+                <p className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1">Train No. / Name</p>
                 <input 
                   type="text"
                   placeholder="Enter Train Number"
                   value={trainQuery}
                   onChange={(e) => setTrainQuery(e.target.value)}
-                  className="bg-transparent outline-none w-full text-white font-medium text-lg placeholder:text-white/20"
+                  className="bg-transparent outline-none w-full text-white font-bold text-lg placeholder:text-white/10"
                 />
               </div>
               <button 
                 onClick={() => trainQuery && navigate('/live-status', { state: { trainNo: trainQuery } })}
-                className="p-3 bg-[#2e7d32] rounded-lg text-white font-bold"
+                className="p-3.5 bg-accent rounded-xl text-bg-primary font-bold shadow-[0_0_10px_rgba(200,241,53,0.2)]"
               >
-                <Search size={22} />
+                <Search size={22} strokeWidth={3} />
               </button>
             </div>
           </div>
         </motion.div>
 
-        {/* Station Search Card */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-bg-card border border-border-custom rounded-xl p-4 flex items-center gap-4"
-        >
-          <div className="flex-1 flex items-center gap-3">
-             <span className="text-xs px-1.5 py-0.5 bg-accent text-bg-primary rounded text-white font-bold">SNGN</span>
-             <input 
-               type="text"
-               placeholder="Sanganer"
-               value={stationQuery}
-               onChange={(e) => setStationQuery(e.target.value)}
-               className="flex-1 bg-transparent outline-none text-white font-medium text-lg"
-             />
-             <X size={18} className="text-text-muted" />
-          </div>
-          <button 
-            onClick={() => stationQuery && navigate('/schedule', { state: { station: stationQuery } })}
-            className="p-3 bg-[#2e7d32] rounded-lg text-white font-bold"
-          >
-            <Search size={22} />
-          </button>
-        </motion.div>
             </motion.div>
           )}
 

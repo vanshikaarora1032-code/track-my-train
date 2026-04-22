@@ -10,8 +10,8 @@ const BottomNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 md:top-0 md:bottom-0 md:right-auto md:w-24 lg:w-32 bg-bg-card border-t md:border-t-0 md:border-r border-border-custom px-6 py-2 md:py-8 z-50 transition-all">
-      <div className="max-w-md mx-auto md:mx-0 w-full h-full flex md:flex-col justify-around md:justify-start items-center md:items-center md:gap-10">
+    <div className="fixed bottom-0 left-0 right-0 md:top-0 md:bottom-0 md:right-auto md:w-24 lg:w-64 bg-bg-card border-t md:border-t-0 md:border-r border-border-custom px-6 py-2 md:py-12 z-50 transition-all shadow-[10px_0_30px_rgba(0,0,0,0.3)]">
+      <div className="max-w-md mx-auto md:mx-0 w-full h-full flex md:flex-col justify-around md:justify-start items-center md:items-start md:gap-8 lg:px-6">
         
         {/* Desktop Logo Placeholder */}
         <div className="hidden md:flex flex-col items-center gap-2 mb-4">
